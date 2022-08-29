@@ -3,10 +3,12 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
-url = 'https://www.ebay.co.uk/sch/i.html?_from=R40&_nkw=raspberry+pi+4b&_sacat=0&LH_PrefLoc=1&LH_Auction=1&rt=nc&LH_Sold=1&LH_Complete=1'
+
+productToSearch = input("Enter a product to find prices for: ")
 
 
-def get_data(url):
+def get_data(product):
+    url = f'https://www.ebay.co.uk/sch/i.html?_from=R40&_nkw={product}&_sacat=0&LH_PrefLoc=1&LH_Auction=1&rt=nc&LH_Sold=1&LH_Complete=1'
     r = requests.get(url)
     soup = BeautifulSoup(r.text, 'html.parser')
     return soup
@@ -27,10 +29,10 @@ def parse(soup):
     return productsList
 
 
-def output(products):
+def output(products, productToSearch):
     productsdf = pd.DataFrame(products)
-    productsdf.to_csv('raspberrypi4b.csv', index=False)
+    productsdf.to_csv(productToSearch + 'productsInfo.csv', index=False)
     print(productsdf)
 
-soup = get_data(url)
-output(parse(soup))
+soup = get_data(productToSearch)
+output(parse(soup), productToSearch)
