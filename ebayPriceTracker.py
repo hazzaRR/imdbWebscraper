@@ -17,9 +17,10 @@ def parse(soup):
     productsList = []
     products = soup.find_all('div', class_='s-item__info clearfix')
 
+
     for i in range(1, len(products)):
         product = {
-            'title': products[i].find('h3', class_='s-item__title s-item__title--has-tags').text,
+            'title': products[i].find('div', class_='s-item__title s-item__title--has-tags').text,
             'soldPrice': float(products[i].find('span', class_='s-item__price').text.replace('£', '').replace(',','')),
             'soldDate' : products[i].find('div', class_='s-item__title--tagblock').find('span', class_='POSITIVE').text.replace('Sold  ', ''),
             'bids': products[i].find('span', class_='s-item__bids s-item__bidCount').text,
